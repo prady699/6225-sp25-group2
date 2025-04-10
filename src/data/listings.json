@@ -1,0 +1,72 @@
+{
+  "listings": [
+    {
+      "id": 1,
+      "title": "Modern Student Loft",
+      "image": "/images/apt-1.jpg",
+      "price": 1200,
+      "score": 95,
+      "beds": 2,
+      "baths": 1,
+      "sqft": 800,
+      "description": "Newly renovated apartment with modern amenities, perfect for students. Features high ceilings, large windows, and a fully equipped kitchen.",
+      "location": {
+        "lat": 42.3601,
+        "lng": -71.0589,
+        "address": "123 Student St, Boston, MA"
+      },
+      "tags": ["Best Match", "Pet Friendly"]
+    },
+    {
+      "id": 2,
+      "title": "Cozy Campus Studio",
+      "image": "/images/apt-2.jpg",
+      "price": 950,
+      "score": 88,
+      "beds": 0,
+      "baths": 1,
+      "sqft": 450,
+      "description": "Efficient studio apartment just steps from campus. Includes utilities and high-speed internet.",
+      "location": {
+        "lat": 42.3505,
+        "lng": -71.1054,
+        "address": "456 College Ave, Cambridge, MA"
+      },
+      "tags": ["Great Value", "Utilities Included"]
+    },
+    {
+      "id": 3,
+      "title": "Luxury Student Suite",
+      "image": "/images/apt-3.jpg",
+      "price": 1800,
+      "score": 92,
+      "beds": 3,
+      "baths": 2,
+      "sqft": 1200,
+      "description": "Spacious 3-bedroom apartment in a secure building with gym and study rooms. Perfect for roommates.",
+      "location": {
+        "lat": 42.3470,
+        "lng": -71.0850,
+        "address": "789 University Blvd, Boston, MA"
+      },
+      "tags": ["Premium", "Gym Access"]
+    },
+    {
+      "id": 4,
+      "title": "Urban Student Haven",
+      "image": "/images/apt-4.jpg",
+      "price": 1400,
+      "score": 90,
+      "beds": 2,
+      "baths": 1,
+      "sqft": 750,
+      "description": "Contemporary apartment with city views and modern furnishings. Includes in-unit laundry and parking.",
+      "location": {
+        "lat": 42.3590,
+        "lng": -71.0632,
+        "address": "321 Downtown St, Boston, MA"
+      },
+      "tags": ["Furnished", "Parking"]
+    }
+  ]
+} 
