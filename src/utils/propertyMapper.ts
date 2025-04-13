@@ -36,14 +36,19 @@ interface RealtorProperty {
 }
 
 interface AppProperty {
-  id: number;
+  id: number | string;
   title: string;
   image: string;
-  price: number;
+  price: string | number;
   location: {
-    lat: number;
-    lng: number;
-    address: string;
+    lat?: number;
+    lng?: number;
+    address: {
+      line: string;
+      city: string;
+      state: string;
+      postal_code: string;
+    } | string;
   };
   description: {
     beds: number;
@@ -66,18 +71,23 @@ export function mapRealtorToAppProperty(realtorProperty: RealtorProperty): AppPr
   const defaultLat = 42.3601;
   const defaultLng = -71.0589;
 
-  // Format the address string
-  const address = `${realtorProperty.location.address.line}, ${realtorProperty.location.address.city}, ${realtorProperty.location.address.state_code} ${realtorProperty.location.address.postal_code}`;
+  // Format price as string with dollar sign
+  const formattedPrice = `$${realtorProperty.list_price}/mo`;
 
   return {
-    id: parseInt(realtorProperty.property_id, 10),
+    id: realtorProperty.property_id,
     title,
     image: realtorProperty.primary_photo.href,
-    price: realtorProperty.list_price,
+    price: formattedPrice,
     location: {
       lat: realtorProperty.location.lat ?? defaultLat,
       lng: realtorProperty.location.lng ?? defaultLng,
-      address
+      address: {
+        line: realtorProperty.location.address.line,
+        city: realtorProperty.location.address.city,
+        state: realtorProperty.location.address.state_code,
+        postal_code: realtorProperty.location.address.postal_code
+      }
     },
     description: {
       beds: realtorProperty.description.beds,
