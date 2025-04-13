@@ -62,12 +62,20 @@ export default function ListingCard({ listing }: ListingCardProps) {
       <div className="p-4">
         <div className="flex justify-between items-start mb-2">
           <h3 className="text-lg font-semibold text-gray-900">{listing.title}</h3>
-          <p className="text-xl font-bold text-yellow-500">${listing.price}/mo</p>
+          <p className="text-xl font-bold text-yellow-500">
+            {typeof listing.price === 'string' 
+              ? listing.price 
+              : `$${listing.price}/mo`}
+          </p>
         </div>
         
         <div className="flex items-center text-gray-600 text-sm mb-3">
           <HiMapPin className="w-4 h-4 mr-1" />
-          <p>{listing.location.address}</p>
+          <p>
+            {typeof listing.location.address === 'string' 
+              ? listing.location.address 
+              : `${(listing.location.address as any).line}, ${(listing.location.address as any).city}`}
+          </p>
         </div>
         
         {/* Features */}

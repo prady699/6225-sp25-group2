@@ -241,7 +241,7 @@ export default function Home() {
                 <p className="text-gray-600 text-sm mb-3">
                   {typeof apt.location.address === 'string' 
                     ? apt.location.address 
-                    : `${apt.location.address.line}, ${apt.location.address.city}`}
+                    : `${apt.location.address.line}, ${apt.location.address.city}, ${apt.location.address.state}`}
                 </p>
                 
                 {/* Features */}
