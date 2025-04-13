@@ -1,0 +1,13 @@
+{
+  "id": "81d869fc-dfcb-4295-8b92-7f4218e01939",
+  "timestamp": "2025-04-13T01:19:35.734Z",
+  "data": {
+    "location": "2220",
+    "minPrice": 1000,
+    "maxPrice": 3000,
+    "bedrooms": "",
+    "amenities": [],
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}

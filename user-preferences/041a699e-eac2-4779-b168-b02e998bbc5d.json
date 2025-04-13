@@ -1,0 +1,13 @@
+{
+  "id": "041a699e-eac2-4779-b168-b02e998bbc5d",
+  "timestamp": "2025-04-13T00:17:43.728Z",
+  "data": {
+    "location": "Dup",
+    "minPrice": 500,
+    "maxPrice": 1500,
+    "bedrooms": "",
+    "amenities": [],
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}

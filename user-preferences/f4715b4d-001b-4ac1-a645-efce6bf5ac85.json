@@ -1,0 +1,21 @@
+{
+  "id": "f4715b4d-001b-4ac1-a645-efce6bf5ac85",
+  "timestamp": "2025-04-13T00:20:44.194Z",
+  "data": {
+    "location": "Alexandria",
+    "price": "1000-7600",
+    "bedrooms": "2",
+    "amenities": [
+      "security",
+      "gym"
+    ],
+    "timestamp": "2025-04-13T00:20:44.184Z",
+    "results": {
+      "resultCount": 1,
+      "timestamp": "2025-04-13T00:20:44.184Z",
+      "formattedPrice": "$1000 - $7600"
+    },
+    "queryType": "search"
+  },
+  "isAutoSave": true
+}

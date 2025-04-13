@@ -1,0 +1,13 @@
+{
+  "id": "d7ee3026-dc2d-4e93-bc79-7d57da302f9c",
+  "timestamp": "2025-04-13T00:20:12.720Z",
+  "data": {
+    "location": "Alex",
+    "minPrice": 1000,
+    "maxPrice": 3000,
+    "bedrooms": "",
+    "amenities": [],
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}

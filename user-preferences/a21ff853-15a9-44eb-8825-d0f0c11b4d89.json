@@ -1,0 +1,13 @@
+{
+  "id": "a21ff853-15a9-44eb-8825-d0f0c11b4d89",
+  "timestamp": "2025-04-13T00:20:13.494Z",
+  "data": {
+    "location": "Alexan",
+    "minPrice": 1000,
+    "maxPrice": 3000,
+    "bedrooms": "",
+    "amenities": [],
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}

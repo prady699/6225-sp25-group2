@@ -1,0 +1,13 @@
+{
+  "id": "dac5335a-06f4-496c-ac81-9973da86ecc1",
+  "timestamp": "2025-04-13T00:17:43.412Z",
+  "data": {
+    "location": "Du",
+    "minPrice": 500,
+    "maxPrice": 1500,
+    "bedrooms": "",
+    "amenities": [],
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}

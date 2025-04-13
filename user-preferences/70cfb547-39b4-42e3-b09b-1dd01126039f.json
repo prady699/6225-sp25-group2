@@ -1,0 +1,24 @@
+{
+  "id": "70cfb547-39b4-42e3-b09b-1dd01126039f",
+  "timestamp": "2025-04-13T22:24:03.581Z",
+  "data": {
+    "location": "22209",
+    "price": "4000-6000",
+    "bedrooms": "2",
+    "amenities": [
+      "wifi"
+    ],
+    "timestamp": "2025-04-13T01:25:49.591Z",
+    "results": {
+      "resultCount": 1,
+      "timestamp": "2025-04-13T01:25:49.591Z",
+      "formattedPrice": "$4000 - $6000",
+      "topMatchesCount": 0
+    },
+    "queryType": "search",
+    "minPrice": 4000,
+    "maxPrice": 6000,
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}

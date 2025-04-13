@@ -1,0 +1,23 @@
+{
+  "id": "14f1d821-8ecd-4146-a012-1b8ff5727e8d",
+  "timestamp": "2025-04-13T00:20:42.665Z",
+  "data": {
+    "location": "Alexandria",
+    "minPrice": 1000,
+    "maxPrice": 7600,
+    "bedrooms": "2",
+    "amenities": [
+      "security",
+      "gym"
+    ],
+    "customAmenities": [],
+    "price": "1000-7600",
+    "allAmenities": [
+      "security",
+      "gym"
+    ],
+    "searchCompleted": true,
+    "viewedResults": true
+  },
+  "isAutoSave": true
+}

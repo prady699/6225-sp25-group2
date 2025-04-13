@@ -1,0 +1,13 @@
+{
+  "id": "eb61b42c-6478-4fa6-923f-ed0071fa7bae",
+  "timestamp": "2025-04-13T00:17:44.088Z",
+  "data": {
+    "location": "Dupon",
+    "minPrice": 500,
+    "maxPrice": 1500,
+    "bedrooms": "",
+    "amenities": [],
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}

@@ -1,0 +1,21 @@
+{
+  "id": "e7e0e232-5b2c-4215-8ea1-40d1bf290f9c",
+  "timestamp": "2025-04-13T01:19:42.404Z",
+  "data": {
+    "location": "22209",
+    "minPrice": 4000,
+    "maxPrice": 6000,
+    "bedrooms": "2",
+    "amenities": [
+      "wifi"
+    ],
+    "customAmenities": [],
+    "price": "4000-6000",
+    "allAmenities": [
+      "wifi"
+    ],
+    "searchCompleted": true,
+    "viewedResults": true
+  },
+  "isAutoSave": true
+}

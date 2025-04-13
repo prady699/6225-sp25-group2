@@ -1,0 +1,13 @@
+{
+  "id": "bdca2da8-96e5-4946-9ee9-45ccd8003ae8",
+  "timestamp": "2025-04-13T00:20:15.218Z",
+  "data": {
+    "location": "Alexandris",
+    "minPrice": 1000,
+    "maxPrice": 3000,
+    "bedrooms": "",
+    "amenities": [],
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}
