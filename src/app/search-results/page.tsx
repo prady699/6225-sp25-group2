@@ -98,8 +98,25 @@ export default function SearchResults() {
   // Format price for display
   const formattedPrice = formatPriceString(searchParamsObj.price);
   
+  // Process listings to ensure they have valid coordinates
+  const processedListings = listings.map(listing => {
+    // Ensure all listings have valid lat/lng
+    if (!listing.location.lat || !listing.location.lng) {
+      // Set default coordinates (Boston) if missing
+      return {
+        ...listing,
+        location: {
+          ...listing.location,
+          lat: 42.3601,
+          lng: -71.0589
+        }
+      };
+    }
+    return listing;
+  });
+  
   // Add match scores to listings
-  const listingsWithScores = listings.map(listing => ({
+  const listingsWithScores = processedListings.map(listing => ({
     ...listing,
     matchScore: generateMatchScore(listing.id)
   })).sort((a, b) => b.matchScore - a.matchScore);
@@ -134,8 +151,13 @@ export default function SearchResults() {
       }));
       
       // Find the listing details
-      const listing = listings.find(l => l.id === id);
+      const listing = processedListings.find(l => l.id === id);
       if (listing) {
+        // Format address to a string for tracking
+        const addressString = typeof listing.location.address === 'string'
+          ? listing.location.address
+          : `${listing.location.address.line}, ${listing.location.address.city}`;
+          
         // Track the user interest in this property
         trackSearchQuery({
           ...searchParamsObj,
@@ -144,7 +166,7 @@ export default function SearchResults() {
           listingDetails: {
             price: listing.price,
             bedrooms: listing.description.beds,
-            location: listing.location.address
+            location: addressString
           }
         });
       }
@@ -181,7 +203,7 @@ export default function SearchResults() {
       {/* Map Section */}
       <div className="w-1/2 h-screen sticky top-0">
         <Map
-          listings={listings}
+          listings={processedListings}
           hoveredListing={hoveredListing}
           onMarkerHover={handleMarkerHover}
         />

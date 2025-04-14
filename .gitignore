@@ -34,4 +34,10 @@ next-env.d.ts
 
 # IDE
 .vscode/
-.idea/ 
+.idea/
+
+# user preferences data
+/user-preferences
+
+# history
+/.history 
