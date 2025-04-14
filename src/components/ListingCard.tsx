@@ -3,14 +3,19 @@ import { HiHomeModern, HiBuildingOffice2, HiSquaresPlus, HiMapPin, HiStar } from
 import Image from './Image';
 
 interface AppProperty {
-  id: number;
+  id: number | string;
   title: string;
   image: string;
-  price: number;
+  price: string | number;
   location: {
-    lat: number;
-    lng: number;
-    address: string;
+    lat?: number;
+    lng?: number;
+    address: string | {
+      line: string;
+      city: string;
+      state: string;
+      postal_code: string;
+    };
   };
   description: {
     type: string;
@@ -20,6 +25,7 @@ interface AppProperty {
   };
   tags: string[];
   href: string;
+  matchScore?: number;
 }
 
 interface ListingCardProps {
@@ -27,16 +33,19 @@ interface ListingCardProps {
 }
 
 // Generate a random match score between 85-98%
-const generateMatchScore = (listingId: number): number => {
+const generateMatchScore = (listingId: number | string): number => {
   // Use the listing ID to generate a consistent random score
-  const seed = listingId.toString().split('').reduce((a, b) => a + parseInt(b, 10), 0);
+  const seed = listingId.toString().split('').reduce((a, b) => {
+    const num = parseInt(b, 10);
+    return a + (isNaN(num) ? 0 : num);
+  }, 0);
   // Generate a score between 85 and 98
   return Math.floor(85 + (seed % 14));
 };
 
 export default function ListingCard({ listing }: ListingCardProps) {
-  // Generate a consistent match score for this listing
-  const matchScore = generateMatchScore(Number(listing.id));
+  // Use existing match score or generate a new one
+  const matchScore = listing.matchScore || generateMatchScore(listing.id);
   
   return (
     <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all">
