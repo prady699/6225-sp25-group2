@@ -24,7 +24,10 @@ yarn-error.log*
 
 # local env files
 .env*.local
+<<<<<<< frontend
+=======
 .env
+>>>>>>> main
 
 # vercel
 .vercel
@@ -33,6 +36,17 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+<<<<<<< frontend
+# IDE
+.vscode/
+.idea/
+
+# user preferences data
+/user-preferences
+
+# history
+/.history 
+=======
 # IDE specific files
 .idea/
 .vscode/
@@ -68,3 +82,4 @@ ENV/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+>>>>>>> main
