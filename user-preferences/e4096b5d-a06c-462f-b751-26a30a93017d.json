@@ -1,0 +1,13 @@
+{
+  "id": "e4096b5d-a06c-462f-b751-26a30a93017d",
+  "timestamp": "2025-04-13T00:17:46.373Z",
+  "data": {
+    "location": "Dupont Circ",
+    "minPrice": 500,
+    "maxPrice": 1500,
+    "bedrooms": "",
+    "amenities": [],
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}

@@ -1,0 +1,22 @@
+{
+  "id": "b3ef7a37-d45e-4c91-aa18-f80a4bd9df00",
+  "timestamp": "2025-04-13T22:24:12.903Z",
+  "data": {
+    "location": "22209",
+    "price": "4000-6000",
+    "bedrooms": "2",
+    "amenities": [
+      "wifi",
+      "Swimming Pool"
+    ],
+    "timestamp": "2025-04-13T22:24:12.881Z",
+    "results": {
+      "resultCount": 1,
+      "timestamp": "2025-04-13T22:24:12.881Z",
+      "formattedPrice": "$4000 - $6000",
+      "topMatchesCount": 0
+    },
+    "queryType": "search"
+  },
+  "isAutoSave": true
+}

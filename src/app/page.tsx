@@ -238,7 +238,11 @@ export default function Home() {
                   <h3 className="text-lg font-semibold text-gray-900">{apt.title}</h3>
                   <p className="text-xl font-bold text-yellow-500">{apt.price}</p>
                 </div>
-                <p className="text-gray-600 text-sm mb-3">{apt.location.address.line}, {apt.location.address.city}</p>
+                <p className="text-gray-600 text-sm mb-3">
+                  {typeof apt.location.address === 'string' 
+                    ? apt.location.address 
+                    : `${apt.location.address.line}, ${apt.location.address.city}`}
+                </p>
                 
                 {/* Features */}
                 <div className="flex items-center gap-4 mb-3 text-gray-600 text-sm">

@@ -1,0 +1,15 @@
+{
+  "id": "787136b7-068e-4c7b-9992-323d99008e09",
+  "timestamp": "2025-04-13T00:01:45.857Z",
+  "data": {
+    "location": "Rosslyn",
+    "price": "1500-2000",
+    "bedrooms": "1",
+    "amenities": [
+      "pets",
+      "furnished",
+      "laundry",
+      "ac"
+    ]
+  }
+}

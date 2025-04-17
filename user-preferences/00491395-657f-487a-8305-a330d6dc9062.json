@@ -1,0 +1,12 @@
+{
+  "id": "00491395-657f-487a-8305-a330d6dc9062",
+  "timestamp": "2025-04-13T00:05:38.405Z",
+  "data": {
+    "location": "GeorgeTown",
+    "price": "1000-1500",
+    "bedrooms": "3+",
+    "amenities": [
+      "ac"
+    ]
+  }
+}

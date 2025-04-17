@@ -1,0 +1,13 @@
+{
+  "id": "bd52c482-48f5-4603-9cd9-3b7b92c95551",
+  "timestamp": "2025-04-13T00:12:25.630Z",
+  "data": {
+    "location": "22209",
+    "price": "2000+",
+    "bedrooms": "3+",
+    "amenities": [
+      "gym"
+    ]
+  },
+  "isAutoSave": true
+}

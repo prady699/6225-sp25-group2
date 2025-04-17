@@ -1,0 +1,13 @@
+{
+  "id": "1edbc27e-6ba3-40d0-9835-c66c64c7894b",
+  "timestamp": "2025-04-13T00:20:14.655Z",
+  "data": {
+    "location": "Alexandr",
+    "minPrice": 1000,
+    "maxPrice": 3000,
+    "bedrooms": "",
+    "amenities": [],
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}

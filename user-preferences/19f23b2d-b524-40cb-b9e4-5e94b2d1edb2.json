@@ -1,0 +1,13 @@
+{
+  "id": "19f23b2d-b524-40cb-b9e4-5e94b2d1edb2",
+  "timestamp": "2025-04-13T00:20:12.502Z",
+  "data": {
+    "location": "Ale",
+    "minPrice": 1000,
+    "maxPrice": 3000,
+    "bedrooms": "",
+    "amenities": [],
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}

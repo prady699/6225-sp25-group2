@@ -1,0 +1,13 @@
+{
+  "id": "fd00dd8e-0910-49be-a9e7-aef184f811b7",
+  "timestamp": "2025-04-13T00:20:12.948Z",
+  "data": {
+    "location": "Alexa",
+    "minPrice": 1000,
+    "maxPrice": 3000,
+    "bedrooms": "",
+    "amenities": [],
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}

@@ -1,0 +1,13 @@
+{
+  "id": "4836df7c-43f7-4733-83cd-dd5132f28bb6",
+  "timestamp": "2025-04-13T00:20:06.533Z",
+  "data": {
+    "location": "Cl",
+    "minPrice": 1000,
+    "maxPrice": 3000,
+    "bedrooms": "",
+    "amenities": [],
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}

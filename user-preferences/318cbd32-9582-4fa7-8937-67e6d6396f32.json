@@ -1,0 +1,22 @@
+{
+  "id": "318cbd32-9582-4fa7-8937-67e6d6396f32",
+  "timestamp": "2025-04-13T00:18:26.690Z",
+  "data": {
+    "location": "Dupont Circle",
+    "price": "500-3000",
+    "bedrooms": "2",
+    "amenities": [
+      "pets",
+      "pool",
+      "Swimming Pool"
+    ],
+    "timestamp": "2025-04-13T00:18:26.683Z",
+    "results": {
+      "resultCount": 1,
+      "timestamp": "2025-04-13T00:18:26.683Z",
+      "formattedPrice": "$500 - $3000"
+    },
+    "queryType": "search"
+  },
+  "isAutoSave": true
+}

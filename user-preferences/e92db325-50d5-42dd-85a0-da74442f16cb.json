@@ -1,0 +1,24 @@
+{
+  "id": "e92db325-50d5-42dd-85a0-da74442f16cb",
+  "timestamp": "2025-04-13T00:20:44.210Z",
+  "data": {
+    "location": "Alexandria",
+    "price": "1000-7600",
+    "bedrooms": "2",
+    "amenities": [
+      "security",
+      "gym"
+    ],
+    "interactionType": "hover",
+    "listingId": 6929813321,
+    "listingDetails": {
+      "price": 4000,
+      "bedrooms": 2,
+      "location": "1451 Belmont St NW Apt 113, Washington, DC 20009"
+    },
+    "timestamp": "2025-04-13T00:20:44.203Z",
+    "results": {},
+    "queryType": "search"
+  },
+  "isAutoSave": true
+}

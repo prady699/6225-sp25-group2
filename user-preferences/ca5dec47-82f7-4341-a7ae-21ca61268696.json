@@ -1,0 +1,13 @@
+{
+  "id": "ca5dec47-82f7-4341-a7ae-21ca61268696",
+  "timestamp": "2025-04-13T00:17:43.891Z",
+  "data": {
+    "location": "Dupo",
+    "minPrice": 500,
+    "maxPrice": 1500,
+    "bedrooms": "",
+    "amenities": [],
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}

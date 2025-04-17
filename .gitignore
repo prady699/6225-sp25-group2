@@ -24,10 +24,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
-<<<<<<< frontend
-=======
-.env
->>>>>>> main
+
 
 # vercel
 .vercel
@@ -36,50 +33,3 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-<<<<<<< frontend
-# IDE
-.vscode/
-.idea/
-
-# user preferences data
-/user-preferences
-
-# history
-/.history 
-=======
-# IDE specific files
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# Python related
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Virtual Environment
-venv/
-env/
-ENV/
-
-# Jupyter Notebook
-.ipynb_checkpoints
->>>>>>> main

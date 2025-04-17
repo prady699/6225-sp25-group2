@@ -1,0 +1,13 @@
+{
+  "id": "c66456df-021c-475d-b143-b3b78d6ff3fb",
+  "timestamp": "2025-04-13T00:17:55.844Z",
+  "data": {
+    "location": "Dupont Circle",
+    "minPrice": 500,
+    "maxPrice": 1600,
+    "bedrooms": "",
+    "amenities": [],
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}

@@ -1,0 +1,13 @@
+{
+  "id": "e79bd88a-50d7-491a-b9ea-bf28edee00c8",
+  "timestamp": "2025-04-13T00:20:12.178Z",
+  "data": {
+    "location": "Al",
+    "minPrice": 1000,
+    "maxPrice": 3000,
+    "bedrooms": "",
+    "amenities": [],
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}

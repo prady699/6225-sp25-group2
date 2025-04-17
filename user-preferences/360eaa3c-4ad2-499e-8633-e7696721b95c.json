@@ -1,0 +1,13 @@
+{
+  "id": "360eaa3c-4ad2-499e-8633-e7696721b95c",
+  "timestamp": "2025-04-13T00:20:16.779Z",
+  "data": {
+    "location": "Alexandri",
+    "minPrice": 1000,
+    "maxPrice": 3000,
+    "bedrooms": "",
+    "amenities": [],
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}

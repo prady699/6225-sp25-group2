@@ -1,0 +1,24 @@
+{
+  "id": "e67f44b8-3586-4685-add4-1117a705622b",
+  "timestamp": "2025-04-13T22:24:14.781Z",
+  "data": {
+    "location": "22209",
+    "price": "4000-6000",
+    "bedrooms": "2",
+    "amenities": [
+      "wifi",
+      "Swimming Pool"
+    ],
+    "interactionType": "hover",
+    "listingId": 6929813321,
+    "listingDetails": {
+      "price": 4000,
+      "bedrooms": 2,
+      "location": "1451 Belmont St NW Apt 113, Washington, DC 20009"
+    },
+    "timestamp": "2025-04-13T22:24:14.774Z",
+    "results": {},
+    "queryType": "search"
+  },
+  "isAutoSave": true
+}

@@ -1,0 +1,13 @@
+{
+  "id": "e10441c8-9b24-40a8-b00e-68a8e5c1ade0",
+  "timestamp": "2025-04-13T00:20:22.044Z",
+  "data": {
+    "location": "Alexandria",
+    "minPrice": 1000,
+    "maxPrice": 5700,
+    "bedrooms": "",
+    "amenities": [],
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}

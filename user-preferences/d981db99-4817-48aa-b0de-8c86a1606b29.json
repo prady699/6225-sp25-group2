@@ -1,0 +1,13 @@
+{
+  "id": "d981db99-4817-48aa-b0de-8c86a1606b29",
+  "timestamp": "2025-04-13T00:17:45.881Z",
+  "data": {
+    "location": "Dupont Ci",
+    "minPrice": 500,
+    "maxPrice": 1500,
+    "bedrooms": "",
+    "amenities": [],
+    "customAmenities": []
+  },
+  "isAutoSave": true
+}
