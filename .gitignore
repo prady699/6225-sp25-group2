@@ -25,6 +25,7 @@ yarn-error.log*
 # local env files
 .env*.local
 
+
 # vercel
 .vercel
 
@@ -32,12 +33,3 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# IDE
-.vscode/
-.idea/
-
-# user preferences data
-/user-preferences
-
-# history
-/.history 
