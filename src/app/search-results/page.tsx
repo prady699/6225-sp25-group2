@@ -1,70 +1,25 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Map from '@/components/Map';
 import ListingCard from '@/components/ListingCard';
-import { HiBuildingOffice2, HiMagnifyingGlass, HiStar } from 'react-icons/hi2';
-import { mapRealtorToAppProperty } from '@/utils/propertyMapper';
+import { HiMagnifyingGlass, HiStar, HiBuildingOffice2 } from 'react-icons/hi2';
+import { mapRealtorToAppProperty, AppProperty } from '@/utils/propertyMapper';
 import { trackSearchQuery } from '@/utils/autoSave';
-
-// Mock data using realtor.com format
-const mockListings = [
-  {
-    primary_photo: {
-      href: "https://ap.rdcpix.com/d25e5e762e833137dbb39d0214539e3al-m2064909868rd-w2048_h1536.webp"
-    },
-    tags: [
-      "central_air",
-      "forced_air",
-      "pets_allowed",
-      "recreation_facilities",
-      "garage_1_or_more"
-    ],
-    status: "for_rent",
-    list_price: 4000,
-    href: "https://www.realtor.com/rentals/details/1451-Belmont-St-NW-Apt-113_Washington_DC_20009_M69298-13321",
-    property_id: "6929813321",
-    description: {
-      beds: 2,
-      baths: 3,
-      baths_full: 2,
-      baths_half: 1,
-      sqft: 1353,
-      type: "condos",
-      text: "Welcome to The Fedora..."
-    },
-    location: {
-      address: {
-        line: "1451 Belmont St NW Apt 113",
-        city: "Washington",
-        state_code: "DC",
-        postal_code: "20009"
-      },
-      lat: 38.9186,
-      lng: -77.0340
-    }
-  },
-  // Add more mock listings in realtor.com format...
-];
-
-// Parse a price string into a readable format
-const formatPriceString = (priceStr: string | null) => {
-  if (!priceStr) return 'Any price';
-  
-  if (priceStr.includes('-')) {
-    const [min, max] = priceStr.split('-');
+ 
+const formatPriceString = (price: string | null) => {
+  if (!price) return 'Any price';
+  if (price.includes('-')) {
+    const [min, max] = price.split('-');
     return `$${min} - $${max}`;
   }
-  
-  return `$${priceStr}`;
+  return `$${price}`;
 };
-
-// Parse amenities from search params
-const parseAmenities = (amenitiesStr: string | null) => {
-  if (!amenitiesStr) return [];
-  return amenitiesStr.split(',').filter(Boolean);
+ 
+const parseAmenities = (amenities: string | null): string[] => {
+  return amenities ? amenities.split(',').filter(Boolean) : [];
 };
 
 // Generate a random match score between 85-98%
@@ -77,240 +32,301 @@ const generateMatchScore = (listingId: number | string): number => {
   // Generate a score between 85 and 98
   return Math.floor(85 + (seed % 14));
 };
-
+ 
 export default function SearchResults() {
   const searchParams = useSearchParams();
-  const [listings, setListings] = useState(mockListings.map(mapRealtorToAppProperty));
-  const [hoveredListing, setHoveredListing] = useState<number | string | null>(null);
+  const [listings, setListings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  
-  // Track when properties are viewed or interacted with
+  const [hoveredListing, setHoveredListing] = useState<number | string | null>(null);
   const [viewedListings, setViewedListings] = useState<Record<string | number, boolean>>({});
-
-  // Parse search params for tracking
-  const searchParamsObj = {
-    location: searchParams.get('location') || '',
-    price: searchParams.get('price') || '',
-    bedrooms: searchParams.get('bedrooms') || '',
-    amenities: parseAmenities(searchParams.get('amenities')),
+  const [selectedListing, setSelectedListing] = useState<number | string | null>(null);
+  
+  // Create refs for property cards to scroll to them
+  const topMatchRefs = React.useRef<Record<string | number, React.RefObject<HTMLDivElement>>>({});
+  const regularListingRefs = React.useRef<Record<string | number, React.RefObject<HTMLDivElement>>>({});
+ 
+  const location = searchParams.get('location');
+  const priceStr = searchParams.get('price');
+  const bedrooms = searchParams.get('bedrooms');
+  const amenitiesStr = searchParams.get('amenities');
+ 
+  const amenities = parseAmenities(amenitiesStr);
+  const formattedPrice = formatPriceString(priceStr);
+ 
+  const [minPrice, maxPrice] = (priceStr?.split('-').map(Number) ?? [1000, 3000]);
+ 
+  const payload = {
+    location: location || '',
+    max_price: maxPrice,
+    bedrooms: bedrooms || '',
+    amenities,
+    proximity_landmark: location || '',
   };
-  
-  // Format price for display
-  const formattedPrice = formatPriceString(searchParamsObj.price);
-  
-  // Process listings to ensure they have valid coordinates
+ 
+  useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        const res = await fetch('https://bo2swvmchd.execute-api.us-east-1.amazonaws.com/searchlistings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+     
+        const data = await res.json();
+        console.log("🔍 Lambda response:", data);
+     
+        // ✅ Check if it's actually an error
+        if (!Array.isArray(data)) {
+          throw new Error(data?.error || "Unexpected response format");
+        }
+     
+        const mapped = data.map(mapRealtorToAppProperty);
+        setListings(mapped);
+        trackSearchQuery(payload, {
+          resultCount: mapped.length,
+          timestamp: new Date().toISOString(),
+          formattedPrice,
+          topMatchesCount: mapped.filter((l: AppProperty) => (l.ai_score ?? 0) >= 90).length,
+        });
+      } catch (error) {
+        console.error('❌ Failed to load listings:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+ 
+    fetchListings();
+  }, []);
+ 
   const processedListings = listings.map(listing => {
-    // Ensure all listings have valid lat/lng
-    if (!listing.location.lat || !listing.location.lng) {
-      // Set default coordinates (Boston) if missing
+    // Check for missing coordinates and ensure we handle both lng and lon property names
+    const hasValidLat = !!listing.location.lat;
+    const hasValidLng = !!(listing.location.lng || (listing.location as any).lon);
+    
+    if (!hasValidLat || !hasValidLng) {
+      console.log('Missing or invalid coordinates for listing:', listing.id);
       return {
         ...listing,
         location: {
           ...listing.location,
-          lat: 42.3601,
-          lng: -71.0589
+          // Use Washington DC as the default location if coordinates are missing
+          lat: listing.location.lat || 38.8936,
+          // Try to use lon if lng is not available
+          lng: listing.location.lng || (listing.location as any).lon || -77.0725,
+        },
+      };
+    }
+    
+    // If we have lon instead of lng, normalize it to lng for consistency
+    if (!(listing.location.lng) && (listing.location as any).lon) {
+      return {
+        ...listing,
+        location: {
+          ...listing.location,
+          lng: (listing.location as any).lon
         }
       };
     }
+    
     return listing;
   });
-  
-  // Add match scores to listings
-  const listingsWithScores = processedListings.map(listing => ({
-    ...listing,
-    matchScore: generateMatchScore(listing.id)
-  })).sort((a, b) => b.matchScore - a.matchScore);
-  
-  // Top matches (90% and above)
+ 
+  const listingsWithScores = processedListings
+    .map(listing => ({
+      ...listing,
+      matchScore: listing?.ai_score || generateMatchScore(listing.id),
+    }))
+    .sort((a, b) => b.matchScore - a.matchScore);
+ 
   const topMatches = listingsWithScores.filter(l => l.matchScore >= 90);
-
+ 
+  // Initialize refs for all listings
   useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
-      
-      // Track the search query and results
-      trackSearchQuery(searchParamsObj, {
-        resultCount: mockListings.length,
-        timestamp: new Date().toISOString(),
-        formattedPrice,
-        topMatchesCount: topMatches.length
-      });
-    }, 1500);
-  }, []);
+    // Create refs for all listings
+    listingsWithScores.forEach(listing => {
+      const isTopMatch = listing.matchScore >= 90;
+      if (isTopMatch) {
+        if (!topMatchRefs.current[listing.id]) {
+          topMatchRefs.current[listing.id] = React.createRef<HTMLDivElement>();
+        }
+      } else {
+        if (!regularListingRefs.current[listing.id]) {
+          regularListingRefs.current[listing.id] = React.createRef<HTMLDivElement>();
+        }
+      }
+    });
+  }, [listingsWithScores]);
 
-  // Track when a listing is hovered (suggesting user interest)
-  const handleMarkerHover = (id: number | string | null) => {
+  const handleMarkerHover = (id: string | number | null) => {
     setHoveredListing(id);
-    
-    // If this is a new listing being hovered, track it
-    if (id !== null && !viewedListings[id]) {
-      setViewedListings(prev => ({
-        ...prev,
-        [id]: true
-      }));
-      
-      // Find the listing details
-      const listing = processedListings.find(l => l.id === id);
+
+    if (id && !viewedListings[id]) {
+      setViewedListings(prev => ({ ...prev, [id]: true }));
+
+      const listing = listingsWithScores.find(l => l.id === id);
       if (listing) {
-        // Format address to a string for tracking
-        const addressString = typeof listing.location.address === 'string'
+        const address = typeof listing.location.address === 'string'
           ? listing.location.address
           : `${listing.location.address.line}, ${listing.location.address.city}`;
-          
-        // Track the user interest in this property
         trackSearchQuery({
-          ...searchParamsObj,
+          ...payload,
           interactionType: 'hover',
           listingId: id,
           listingDetails: {
             price: listing.price,
             bedrooms: listing.description.beds,
-            location: addressString
-          }
+            location: address,
+          },
         });
       }
     }
   };
-
+  
+  // Handle marker click to scroll to the corresponding property card
+  const handleMarkerClick = (id: string | number) => {
+    setSelectedListing(id);
+    
+    // Find if the listing is a top match or regular listing
+    const listing = listingsWithScores.find(l => l.id === id);
+    if (!listing) return;
+    
+    const isTopMatch = listing.matchScore >= 90;
+    const ref = isTopMatch ? topMatchRefs.current[id] : regularListingRefs.current[id];
+    
+    if (ref && ref.current) {
+      // Scroll to the property card with a smooth animation
+      ref.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      // Highlight the card temporarily
+      ref.current.classList.add('ring-4', 'ring-yellow-400', 'ring-opacity-100');
+      setTimeout(() => {
+        if (ref.current) {
+          ref.current.classList.remove('ring-4', 'ring-yellow-400', 'ring-opacity-100');
+        }
+      }, 2000);
+    }
+  };
+ 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <HiMagnifyingGlass className="w-12 h-12 text-yellow-400 animate-bounce mx-auto mb-4" />
-          <p className="text-gray-600">Finding your perfect home...</p>
-        </div>
-      </div>
+<div className="min-h-screen bg-gray-50 flex items-center justify-center">
+<div className="text-center">
+<HiMagnifyingGlass className="w-12 h-12 text-yellow-400 animate-bounce mx-auto mb-4" />
+<p className="text-gray-600">Finding your perfect home...</p>
+</div>
+</div>
     );
   }
-
+ 
   if (listings.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <HiBuildingOffice2 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">No Results Found</h2>
-          <p className="text-gray-600">
-            Try adjusting your search criteria to find more options
-          </p>
-        </div>
-      </div>
+<div className="min-h-screen bg-gray-50 flex items-center justify-center">
+<div className="text-center">
+<HiBuildingOffice2 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+<h2 className="text-2xl font-bold text-gray-900 mb-2">No Results Found</h2>
+<p className="text-gray-600">Try adjusting your search criteria to find more options.</p>
+</div>
+</div>
     );
   }
-
+ 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      {/* Map Section */}
-      <div className="w-1/2 h-screen sticky top-0">
-        <Map
+<div className="min-h-screen bg-gray-50 flex">
+<div className="w-1/2 h-screen sticky top-0">
+<Map
           listings={processedListings}
           hoveredListing={hoveredListing}
           onMarkerHover={handleMarkerHover}
+          onMarkerClick={handleMarkerClick}
         />
-      </div>
-
-      {/* Listings Section */}
+</div>
+ 
       <div className="w-1/2 p-8">
-        <div className="max-w-2xl mx-auto">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+<div className="max-w-2xl mx-auto">
+<h1 className="text-2xl font-bold text-gray-900 mb-2">
             {listings.length} Properties Found
-          </h1>
-          <p className="text-gray-600 mb-2">
-            in {searchParamsObj.location || 'your selected area'}
-          </p>
-          
-          {/* Display search parameters */}
+</h1>
+<p className="text-gray-600 mb-2">
+            in {location || 'your selected area'}
+</p>
+ 
           <div className="mb-6 flex flex-wrap gap-2">
             {formattedPrice && (
-              <div className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">
+<div className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">
                 {formattedPrice}
-              </div>
+</div>
             )}
-            
-            {searchParamsObj.bedrooms && (
-              <div className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">
-                {searchParamsObj.bedrooms === '0' ? 'Studio' : 
-                 `${searchParamsObj.bedrooms} ${parseInt(searchParamsObj.bedrooms) === 1 ? 'Bedroom' : 'Bedrooms'}`}
-              </div>
+            {bedrooms && (
+<div className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">
+                {bedrooms === '0' ? 'Studio' : `${bedrooms} Bedroom${bedrooms !== '1' ? 's' : ''}`}
+</div>
             )}
-            
-            {searchParamsObj.amenities.map((amenity) => (
-              <div key={amenity} className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">
-                {amenity}
-              </div>
+            {amenities.map(a => (
+<div key={a} className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">
+                {a}
+</div>
             ))}
-          </div>
-
-          {/* Filters */}
-          <div className="mb-8 flex flex-wrap gap-4">
-            <select className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-              <option>Price: Low to High</option>
-              <option>Price: High to Low</option>
-            </select>
-            <select className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-              <option>All Types</option>
-              <option>Apartment</option>
-              <option>Condo</option>
-              <option>Studio</option>
-            </select>
-            <select className="px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-              <option>Any Beds</option>
-              <option>Studio</option>
-              <option>1+ Beds</option>
-              <option>2+ Beds</option>
-              <option>3+ Beds</option>
-            </select>
-          </div>
-          
-          {/* Best Matches Section */}
+</div>
+ 
           {topMatches.length > 0 && (
-            <div className="mb-8">
-              <div className="flex items-center mb-4">
-                <HiStar className="text-yellow-400 w-6 h-6 mr-2" />
-                <h2 className="text-xl font-semibold">Best AI Matches</h2>
-              </div>
-              
-              <div className="grid grid-cols-1 gap-4 mb-4">
-                {topMatches.slice(0, 2).map((listing) => (
-                  <motion.div
+<div className="mb-8">
+<div className="flex items-center mb-4">
+<HiStar className="text-yellow-400 w-6 h-6 mr-2" />
+<h2 className="text-xl font-semibold">Best AI Matches</h2>
+</div>
+<div className="grid grid-cols-1 gap-4 mb-4">
+                {topMatches.map(listing => (
+<motion.div
                     key={`top-${listing.id}`}
+                    ref={topMatchRefs.current[listing.id]}
                     onHoverStart={() => handleMarkerHover(listing.id)}
                     onHoverEnd={() => setHoveredListing(null)}
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    animate={{ 
+                      opacity: 1, 
+                      y: 0,
+                      scale: selectedListing === listing.id ? [1, 1.05, 1] : 1
+                    }}
                     transition={{ duration: 0.3 }}
-                    className="relative"
-                  >
-                    <div className="absolute -right-2 -top-2 z-10 bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-lg">
+                    className={`relative transition-all duration-300 ${
+                      selectedListing === listing.id ? 'shadow-xl' : ''
+                    }`}
+>
+<div className="absolute -right-2 -top-2 z-10 bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold shadow-lg">
                       {listing.matchScore}%
-                    </div>
-                    <ListingCard listing={listing} />
-                  </motion.div>
+</div>
+<ListingCard listing={listing} />
+</motion.div>
                 ))}
-              </div>
-            </div>
+</div>
+</div>
           )}
-          
-          {/* Other Listings */}
-          <div>
-            <h2 className="text-lg font-medium text-gray-900 mb-4">All Properties</h2>
-            <div className="space-y-6">
-              {listingsWithScores.filter(l => l.matchScore < 90).map((listing) => (
-                <motion.div
-                  key={listing.id}
-                  onHoverStart={() => handleMarkerHover(listing.id)}
-                  onHoverEnd={() => setHoveredListing(null)}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <ListingCard listing={listing} />
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+ 
+          <h2 className="text-lg font-medium text-gray-900 mb-4">All Properties</h2>
+<div className="space-y-6">
+            {listingsWithScores.filter(l => l.matchScore < 90).map(listing => (
+<motion.div
+                key={listing.id}
+                ref={regularListingRefs.current[listing.id]}
+                onHoverStart={() => handleMarkerHover(listing.id)}
+                onHoverEnd={() => setHoveredListing(null)}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ 
+                  opacity: 1, 
+                  y: 0,
+                  scale: selectedListing === listing.id ? [1, 1.05, 1] : 1
+                }}
+                transition={{ duration: 0.3 }}
+                className={`transition-all duration-300 ${
+                  selectedListing === listing.id ? 'shadow-xl' : ''
+                }`}
+>
+<ListingCard listing={listing} />
+</motion.div>
+            ))}
+</div>
+</div>
+</div>
+</div>
   );
-} 
+}

@@ -29,23 +29,28 @@ interface LeafletMapProps {
   listings: Listing[];
   hoveredListing: number | string | null;
   onMarkerHover: (id: number | string | null) => void;
+  onMarkerClick?: (id: number | string) => void;  // Add new prop for marker click handler
 }
 
-// Fix for default marker icons in Next.js
+// Create custom marker icons with full price display
 const createIcon = (price: string | number) => {
-  const priceValue = typeof price === 'string' 
-    ? parseInt(price.replace(/[^0-9]/g, '')) 
+  // Extract numeric value from price (remove non-numeric characters)
+  const priceValue = typeof price === 'string'
+    ? parseInt(price.replace(/[^0-9]/g, ''))
     : price;
+  
+  // Display the full price amount without abbreviations
+  const formattedPrice = `$${priceValue}`;
     
   return L.divIcon({
     className: 'custom-marker',
-    html: `<div class="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-gray-900 font-semibold shadow-lg">$${Math.floor(priceValue / 100)}</div>`,
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
+    html: `<div class="px-2 py-1 bg-yellow-400 rounded-full flex items-center justify-center text-gray-900 text-xs font-semibold shadow-lg">${formattedPrice}</div>`,
+    iconSize: [40, 24], // Slightly larger to accommodate full price
+    iconAnchor: [20, 24],
   });
 };
 
-const LeafletMap: React.FC<LeafletMapProps> = ({ listings, hoveredListing, onMarkerHover }) => {
+const LeafletMap: React.FC<LeafletMapProps> = ({ listings, hoveredListing, onMarkerHover, onMarkerClick }) => {
   // Fix Leaflet icon issues
   useEffect(() => {
     // Fix Leaflet default icon issue
@@ -57,12 +62,26 @@ const LeafletMap: React.FC<LeafletMapProps> = ({ listings, hoveredListing, onMar
     });
   }, []);
 
-  // Center map on the first listing or default to Boston
-  const defaultCenter = { lat: 42.3601, lng: -71.0589 };
-  const firstListing = listings[0];
-  const center = firstListing?.location?.lat && firstListing?.location?.lng
-    ? { lat: firstListing.location.lat, lng: firstListing.location.lng }
-    : defaultCenter;
+  // Calculate the average center of all listings with valid coordinates
+  // Default to Washington DC if no valid coordinates are found
+  const defaultCenter = { lat: 38.8936, lng: -77.0725 };
+  
+  const validListings = listings.filter(listing => 
+    listing.location.lat && listing.location.lng
+  );
+  
+  let center = defaultCenter;
+  
+  if (validListings.length > 0) {
+    // Calculate the average lat/lng of all listings
+    const sumLat = validListings.reduce((sum, listing) => sum + (listing.location.lat || 0), 0);
+    const sumLng = validListings.reduce((sum, listing) => sum + (listing.location.lng || 0), 0);
+    
+    center = {
+      lat: sumLat / validListings.length,
+      lng: sumLng / validListings.length
+    };
+  }
 
   return (
     <div className="relative w-full h-full">
@@ -87,6 +106,7 @@ const LeafletMap: React.FC<LeafletMapProps> = ({ listings, hoveredListing, onMar
               eventHandlers={{
                 mouseover: () => onMarkerHover(listing.id),
                 mouseout: () => onMarkerHover(null),
+                click: () => onMarkerClick && onMarkerClick(listing.id),  // Add click handler
               }}
             >
               <Popup>
