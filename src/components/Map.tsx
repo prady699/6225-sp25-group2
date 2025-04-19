@@ -25,10 +25,11 @@ interface MapProps {
   listings: Listing[];
   hoveredListing: number | string | null;
   onMarkerHover: (id: number | string | null) => void;
+  onMarkerClick?: (id: number | string) => void;  // Add new prop for marker click handler
 }
 
 // This component works in both local and AWS environments
-const Map = ({ listings, hoveredListing, onMarkerHover }: MapProps) => {
+const Map = ({ listings, hoveredListing, onMarkerHover, onMarkerClick }: MapProps) => {
   // Track if we're in a browser environment
   const [isBrowser, setIsBrowser] = useState(false);
   const [MapComponent, setMapComponent] = useState<React.ComponentType<MapProps> | null>(null);
@@ -98,7 +99,7 @@ const Map = ({ listings, hoveredListing, onMarkerHover }: MapProps) => {
   }
   
   // If the map component has loaded, render it
-  return <MapComponent listings={listings} hoveredListing={hoveredListing} onMarkerHover={onMarkerHover} />;
+  return <MapComponent listings={listings} hoveredListing={hoveredListing} onMarkerHover={onMarkerHover} onMarkerClick={onMarkerClick} />;
 };
 
 export default Map; 

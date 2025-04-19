@@ -82,35 +82,55 @@ export default function SearchPage() {
     }
   }, [formData]);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep === steps.length - 1) {
-      handleProceedToResults();
+      await handleProceedToResults();
     } else {
       setCurrentStep((prev) => prev + 1);
     }
   };
 
-  const handleProceedToResults = () => {
-    const priceParam = `${formData.minPrice}-${formData.maxPrice}`;
-    
+  const handleProceedToResults = async () => {
     const allAmenities = [...formData.amenities, ...formData.customAmenities];
-    
-    autoSavePreferences({
-      ...formData,
-      price: priceParam,
-      allAmenities,
-      searchCompleted: true,
-      viewedResults: true,
-    });
-    
-    router.push(
-      `/search-results?${new URLSearchParams({
-        location: formData.location,
-        price: priceParam,
-        bedrooms: formData.bedrooms,
-        amenities: allAmenities.join(','),
-      }).toString()}`
-    );
+    const postalCodeMatch = formData.location.match(/\b\d{5}\b/);
+    const postal_code = postalCodeMatch ? postalCodeMatch[0] : '';
+   
+    const payload = {
+      location: formData.location,
+      postal_code:postal_code,
+      min_price: formData.minPrice,
+      max_price: formData.maxPrice,
+      bedrooms: formData.bedrooms,
+      amenities: allAmenities,
+      proximity_landmark: formData.location, // or another proximity input if you have one
+    };
+   
+    try {
+      const res = await fetch('https://bo2swvmchd.execute-api.us-east-1.amazonaws.com/searchlistings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+   
+      const results = await res.json();
+   
+      // Navigate with query string only
+      router.push(
+        `/search-results?${new URLSearchParams({
+          location: formData.location,
+          price: `${formData.minPrice}-${formData.maxPrice}`,
+          bedrooms: formData.bedrooms,
+          amenities: allAmenities.join(','),
+        })}`
+      );
+      console.log("🚀 Triggering Lambda with payload:", payload);
+
+    console.log("✅ Lambda response:", results);
+    } catch (err) {
+      console.error('❌ Error calling Lambda:', err);
+    }
   };
 
   const handleSelectPreference = (preferenceData: any) => {
