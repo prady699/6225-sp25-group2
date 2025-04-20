@@ -40,7 +40,11 @@ const sampleRealtorProperty = {
       line: "1451 Belmont St NW Apt 113",
       city: "Washington",
       state_code: "DC",
-      postal_code: "20009"
+      postal_code: "20009",
+      coordinate: {
+        lat: 38.9209,
+        lng: -77.0376
+      }
     }
   }
 };
