@@ -16,6 +16,7 @@ artifacts:
     - package.json
     - package-lock.json
     - Procfile
+    - start.sh
     - .next/**/*
     - public/**/*
   discard-paths: no
