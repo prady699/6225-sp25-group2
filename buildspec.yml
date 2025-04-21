@@ -6,10 +6,16 @@ phases:
       nodejs: 22
     commands:
       - npm ci
+
+  build:
+    commands:
       - npm run build
 
 artifacts:
   files:
-    - '**/*'
-  base-directory: .
+    - package.json
+    - package-lock.json
+    - Procfile
+    - .next/**/*
+    - public/**/*
   discard-paths: no
