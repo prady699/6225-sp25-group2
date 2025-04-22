@@ -9,19 +9,19 @@ import { HiMagnifyingGlass } from 'react-icons/hi2';
 const slides = [
   {
     id: 1,
-    image: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    image: '/images/pexels-photo-1571460.jpeg',
     title: 'Find Your Perfect Student Home',
     description: 'Discover AI-matched apartments near your campus',
   },
   {
     id: 2,
-    image: 'https://images.pexels.com/photos/1643384/pexels-photo-1643384.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    image: '/images/pexels-photo-1643384.jpeg',
     title: 'Smart Apartment Matching',
     description: 'Let our AI find your ideal living space based on your preferences',
   },
   {
     id: 3,
-    image: 'https://images.pexels.com/photos/1571468/pexels-photo-1571468.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    image: '/images/pexels-photo-1571468.jpeg',
     title: 'Premium Student Living',
     description: 'Quality housing that fits your student budget',
   },
